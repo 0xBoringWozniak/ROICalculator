@@ -31,7 +31,7 @@ class Investor(ABC):
         # EXCEPT DEPOSIT TRANSACTION
         #
         self.transactions = sorted(
-            transactions, key=lambda x: x.timestamp, reverse=True)
+            transactions, key=lambda x: x.timestamp, reverse=False)
 
     @abstractmethod
     def get_nav_by_timestamp(self, timestamp: datetime) -> float:

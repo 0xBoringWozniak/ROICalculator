@@ -56,46 +56,45 @@ class ROICalculator:
         self.__init_pie()
 
         for transaction in self.investor.transactions:
-            if transaction.timestamp >= timestamp:
+            if transaction.timestamp > timestamp:
                 break
-            else:
-                # 1 condition: before transaction
 
-                # T0
-                timestamp_before_transtaction = transaction.timestamp - \
-                    timedelta(hours=self.eps_hours)
+            # 1 condition: before transaction
+            # T0
+            timestamp_before_transtaction = transaction.timestamp - \
+                timedelta(hours=self.eps_hours)
 
-                if timestamp_before_transtaction < self.investor.investment_timestamp:
-                    nav_before = self.investor.deposit
+            if timestamp_before_transtaction < self.investor.investment_timestamp:
+                nav_before = self.investor.deposit
 
-                # NAV_T0
-                try:
-                    nav_before = self.investor.get_nav_by_timestamp(
-                        timestamp_before_transtaction)
-                except Exception as e:
-                    print(e)
+            # NAV_T0
+            try:
+                nav_before = self.investor.get_nav_by_timestamp(
+                    timestamp_before_transtaction)
+            except Exception as e:
+                print(e)
 
-                # P0 = NAV_T0 / N
-                self.__calculate_share_price(nav_before)
+            # P0 = NAV_T0 / N
+            self.__calculate_share_price(nav_before)
 
-                # 2 condition: add funding to virtual pie
-                # shares = M
-                self.__calculate_shares(transaction.funding)
+            # 2 condition: add funding to virtual pie
+            # shares = M
+            self.__calculate_shares(transaction.funding)
 
-                # T1
-                timestamp_after_transtaction = transaction.timestamp + \
-                    timedelta(hours=self.eps_hours)
+            # T1
+            timestamp_after_transtaction = transaction.timestamp + \
+                timedelta(hours=self.eps_hours)
 
-                # NAV_T
-                try:
-                    nav_after = self.investor.get_nav_by_timestamp(
-                        timestamp_after_transtaction)
-                except Exception as e:
-                    print(e)
+            # NAV_T
+            try:
+                nav_after = self.investor.get_nav_by_timestamp(
+                    timestamp_after_transtaction)
+            except Exception as e:
+                print(e)
 
-                # update share price
-                # P[U] = NAV_T1[U] / M
-                self.__calculate_share_price(nav_after)
+            # update share price
+            # P[U] = NAV_T1[U] / M
+            self.__calculate_share_price(nav_after)
 
     def __calculate_share_price_by_timestamp(self, timestamp: datetime):
         # update shares N in self.shares
