@@ -3,11 +3,11 @@ from datetime import datetime, timedelta
 from investor import Investor
 
 
-class SharePricePerfomanceCalculator:
+class ROICalculator:
     '''
     theory: https://www.investopedia.com/terms/r/returnoninvestment.asp
 
-    SharePricePerfomanceCalculator.
+    ROICalculator.
 
     1. Create virtual pie __init_pie 
     {

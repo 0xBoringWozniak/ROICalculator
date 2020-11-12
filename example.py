@@ -2,13 +2,13 @@ from datetime import datetime, timedelta
 
 from investor import Investor
 from transaction import Transaction
-from SharePricePerfomanceCalculator import SharePricePerfomanceCalculator
+from ROICalculator import ROICalculator
 
 
 class ExampleInvestor(Investor):
     '''
 
-    Simple lending(static) strategy with 0.5% profit daily
+    Simple lending (static) strategy with 0.05% profit daily
     on investments without reinvestment
 
     '''
@@ -17,16 +17,20 @@ class ExampleInvestor(Investor):
         super().__init__(investment_timestamp, deposit, transactions)
 
     def lending_assets(self, timestamp):
+        # before transaction
         if timestamp <= datetime(2020, 4, 1):
             return 100
+        # after transaction
         else:
             return 300
 
     def get_nav_by_timestamp(self, timestamp):
         '''
+
         NAV = investments + PnL
         daily PnL = 0.0005 * investments =>
         total PnL = 0.0005 * sum(invesmetns_i * period_i)
+
         '''
         if timestamp < datetime(2020, 4, 1):
             pnl = 0.0005 * \
@@ -35,6 +39,7 @@ class ExampleInvestor(Investor):
             return self.lending_assets(timestamp) + pnl
 
         elif timestamp > datetime(2020, 4, 1):
+            # redefine investments_i and daily PnL
             transaction_timestamp = datetime(2020, 4, 1)
             acc_pnl_before_transaction = 0.0005 * self.lending_assets(
                 transaction_timestamp) * (transaction_timestamp - self.investment_timestamp).days
@@ -53,9 +58,9 @@ investor = ExampleInvestor(investment_timestamp=datetime(2020, 1, 1),
                            deposit=100, transactions=[transaction])
 
 # create pie
-pie = SharePricePerfomanceCalculator(investor)
+pie = ROICalculator(investor)
 
-# initial investment
+# initial investment time
 t_0 = pie.investor.investment_timestamp
 
 #
