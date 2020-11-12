@@ -10,15 +10,15 @@ For this purpose we can use following algorithm:
 
 2. Any deposit or withrawal is equivalent to buying or selling some shares per share price ```P_T0```.
 
-Let ```X``` was added to virtual pie at time ```T```, where ```X > 0``` when we make deposit, and ```X < 0``` when we make withdrawal;
+    Let ```X``` was added to virtual pie at time ```T```, where ```X > 0``` when we make deposit, and ```X < 0``` when we make withdrawal;
 
-```T0 = T - eps``` - timestamp before transaction
-```T1 = T + eps``` - timestamp after transaction
+    ```T0 = T - eps``` - timestamp before transaction
+    ```T1 = T + eps``` - timestamp after transaction
 
-Pie consisted of ```N``` SHARES with share price ```P_0 = NAV_T0 / N```.
+    Pie consisted of ```N``` SHARES with share price ```P_0 = NAV_T0 / N```.
 
-New shares amount will be ```M = N + X / P_0```
-Updated share price ```P_T1 = NAV_T1 / M```
+    New shares amount will be ```M = N + X / P_0```
+    Updated share price ```P_T1 = NAV_T1 / M```
 
 3. So, for each moment we have our ```NAV_t```, virtual shares amount ```N_t``` and share price ```P_t = NAV_t / N_t``` and we can calculate ROI as ```P_t / P_t0 - 1```
 Moreover we can calculate ROI at any period ```(t, t0)```, ```t > t0```.
