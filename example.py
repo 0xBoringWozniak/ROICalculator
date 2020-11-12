@@ -8,7 +8,7 @@ from SharePricePerfomanceCalculator import SharePricePerfomanceCalculator
 class ExampleInvestor(Investor):
     '''
 
-    Simple static strategy with 0.5% profit daily
+    Simple lending(static) strategy with 0.5% profit daily
     on investments without reinvestment
 
     '''
@@ -23,42 +23,69 @@ class ExampleInvestor(Investor):
             return 300
 
     def get_nav_by_timestamp(self, timestamp):
+        '''
+        NAV = investments + PnL
+        daily PnL = 0.0005 * investments =>
+        total PnL = 0.0005 * sum(invesmetns_i * period_i)
+        '''
         if timestamp < datetime(2020, 4, 1):
-            pnl = 0.0005 * self.lending_assets(timestamp) * (timestamp - self.investment_timestamp).days
+            pnl = 0.0005 * \
+                self.lending_assets(timestamp) * \
+                (timestamp - self.investment_timestamp).days
             return self.lending_assets(timestamp) + pnl
 
         elif timestamp > datetime(2020, 4, 1):
             transaction_timestamp = datetime(2020, 4, 1)
-            acc_pnl_before_transaction = 0.0005 * self.lending_assets(transaction_timestamp) * (transaction_timestamp - self.investment_timestamp).days
+            acc_pnl_before_transaction = 0.0005 * self.lending_assets(
+                transaction_timestamp) * (transaction_timestamp - self.investment_timestamp).days
             pnl =  0.0005 * self.lending_assets(timestamp) * (timestamp - transaction_timestamp).days +\
-                   acc_pnl_before_transaction
+                acc_pnl_before_transaction
 
             return self.lending_assets(timestamp) + pnl
 
-# Example.
-# initial investment = 100K$
-# deposit on strategy 200K$ at 2020/4/1
+# # # Example.
+# initial investment = 100$
+# deposit on strategy 200$ at 2020/4/1
+# daily pnl = 0.5%
 
 transaction = Transaction(datetime(2020, 4, 1), funding=200)
 investor = ExampleInvestor(investment_timestamp=datetime(2020, 1, 1),
-                        deposit=100, transactions=[transaction])
+                           deposit=100, transactions=[transaction])
 
+# create pie
 pie = SharePricePerfomanceCalculator(investor)
 
-# before transaction
-t_1 = datetime(2020, 3, 31)
+# initial investment
 t_0 = pie.investor.investment_timestamp
-return_ytd_1 = pie.get_share_price_perfomance(t=t_1, t0=t_0)
-print(f'YTD on {t_1.date()} = {return_ytd_1 * 100:.2f} %')
+
+#
+# before transaction
+#
+
+t_1 = datetime(2020, 3, 31)
+return_day_1 = pie.get_share_price_perfomance(t=t_1,
+                                              t0=t_1 - timedelta(days=1))
+print(f'1D return on {t_1.date()} = {return_day_1 * 100:.2f} %')
+
 return_mtd_1 = pie.get_share_price_perfomance(t=t_1,
                                               t0=t_1.replace(day=1) - timedelta(hours=1))
-print(f'MTD on {t_1.date()} = {return_mtd_1 * 100:.2f} %')
+print(f'MTD return on {t_1.date()} = {return_mtd_1 * 100:.2f} %')
 
+return_ytd_1 = pie.get_share_price_perfomance(t=t_1, t0=t_0)
+print(f'YTD return on {t_1.date()} = {return_ytd_1 * 100:.2f} %\n')
+
+#
 # after transaction
+#
+
 t_2 = datetime(2020, 4, 30)
-return_ytd_2 = pie.get_share_price_perfomance(t=t_2, t0=t_0)
-print(f'YTD on {t_2.date()} = {return_ytd_2 * 100:.2f} %')
+return_day_2 = pie.get_share_price_perfomance(t=t_2,
+                                              t0=t_2 - timedelta(days=1))
+print(f'1D return on {t_2.date()} = {return_day_2 * 100:.2f} %')
 
 return_mtd_2 = pie.get_share_price_perfomance(t=t_2,
                                               t0=t_2.replace(day=1) - timedelta(hours=1))
-print(f'MTD on {t_2.date()} = {return_mtd_2 * 100:.2f} %')
+print(f'MTD return on {t_2.date()} = {return_mtd_2 * 100:.2f} %')
+
+return_ytd_2 = pie.get_share_price_perfomance(t=t_2, t0=t_0)
+print(f'YTD return on {t_2.date()} = {return_ytd_2 * 100:.2f} %\n')
