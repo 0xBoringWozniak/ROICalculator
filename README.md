@@ -87,7 +87,7 @@ investor = ExampleInvestor(investment_timestamp=datetime(2020, 1, 1),
                            deposit=100, transactions=[transaction])
 
 # create pie
-pie = SharePricePerfomanceCalculator(investor)
+pie = ROICalculator(investor)
 ```
 
 3. Calculate ROI per period (t_0, t_1), **t_1 > t_0**
