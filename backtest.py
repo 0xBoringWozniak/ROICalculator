@@ -73,12 +73,12 @@ investor = ExampleInvestor(investment_timestamp=datetime(2020, 1, 1),
                            deposit=100, transactions=transactions)
 investor.coef = coef
 
-# create pie
-pie = ROICalculator(investor)
+# create pif
+pif = ROICalculator(investor)
 
 
 # initial investment time
-t_0 = pie.investor.investment_timestamp
+t_0 = pif.investor.investment_timestamp
 
 #
 # before transaction
@@ -86,14 +86,14 @@ t_0 = pie.investor.investment_timestamp
 
 for i in range(1, 12):
     t_1 = datetime(2020, i+1, 1) - timedelta(hours=1)
-    print(pie.investor.get_nav_by_timestamp(t_1))
-    return_day_1 = pie.get_share_price_perfomance(t=t_1,
+    print(pif.investor.get_nav_by_timestamp(t_1))
+    return_day_1 = pif.get_share_price_perfomance(t=t_1,
                                                   t0=t_1 - timedelta(days=1))
     print(f'1D return on {t_1.date()} = {return_day_1 * 100:.2f} %')
 
-    return_mtd_1 = pie.get_share_price_perfomance(t=t_1,
+    return_mtd_1 = pif.get_share_price_perfomance(t=t_1,
                                                   t0=t_1.replace(day=1))
     print(f'MTD return on {t_1.date()} = {return_mtd_1 * 100:.2f} %')
 
-    return_ytd_1 = pie.get_share_price_perfomance(t=t_1, t0=t_0)
+    return_ytd_1 = pif.get_share_price_perfomance(t=t_1, t0=t_0)
     print(f'YTD return on {t_1.date()} = {return_ytd_1 * 100:.2f} %\n')

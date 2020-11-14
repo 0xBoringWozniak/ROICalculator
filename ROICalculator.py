@@ -9,7 +9,7 @@ class ROICalculator:
 
     ROICalculator.
 
-    1. Create virtual pie __init_pie 
+    1. Create virtual pif __init_pif 
     {
         init shares = deposit quantity of asset[U]
         share price = 1
@@ -17,15 +17,15 @@ class ROICalculator:
 
     2. System go through 3 conditions while getting funding
     {
-        Let funding X[U] was added to virtual pie at T;
+        Let funding X[U] was added to virtual pif at T;
 
         T - transaction timestamp,
         T0 = T - eps - timestamp before transaction
         T1 = T + eps - timestamp after transaction
 
-        Pie consisted of N SHARES with share price P_0[U] = NAV_T0[U] / N.
+        pif consisted of N SHARES with share price P_0[U] = NAV_T0[U] / N.
 
-        Add X[U] to virtual pie: M = N + X[U] / P_0[U],
+        Add X[U] to virtual pif: M = N + X[U] / P_0[U],
         where M - new shares amount
 
         Update share price P[U] = NAV_T1[U] / M
@@ -38,9 +38,9 @@ class ROICalculator:
         # and nav_after transaction
         self.investor = investor
         self.eps_hours = eps_hours
-        self.__init_pie()
+        self.__init_pif()
 
-    def __init_pie(self):
+    def __init_pif(self):
         self.shares = self.investor.deposit
         self.share_price = 1
 
@@ -52,8 +52,8 @@ class ROICalculator:
 
     def __calculate_shares_by_timestamp(self, timestamp: datetime):
 
-        # create virtual pie each time calculating shares
-        self.__init_pie()
+        # create virtual pif each time calculating shares
+        self.__init_pif()
 
         for transaction in self.investor.transactions:
             if transaction.timestamp > timestamp:
@@ -77,7 +77,7 @@ class ROICalculator:
             # P0 = NAV_T0 / N
             self.__calculate_share_price(nav_before)
 
-            # 2 condition: add funding to virtual pie
+            # 2 condition: add funding to virtual pif
             # shares = M
             self.__calculate_shares(transaction.funding)
 

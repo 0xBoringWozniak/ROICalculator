@@ -6,16 +6,16 @@ Let we have some investments in strategy and we want to calculate ROI. If we don
 
 For this purpose we can use the following algorithm:
 
-1. Create virtual pie with shares = deposited asset (in shares) and set share price ```P = 1```.
+1. Create virtual pif with shares = deposited asset (in shares) and set share price ```P = 1```.
 
 2. Any deposit or withdrawal is equivalent to buying or selling some shares per share price ```P_T0```.
 
-    Let ```X``` was added to virtual pie at time ```T```, where ```X > 0``` when we make a deposit, and ```X < 0``` when we make a withdrawal;
+    Let ```X``` was added to virtual pif at time ```T```, where ```X > 0``` when we make a deposit, and ```X < 0``` when we make a withdrawal;
 
     ```T0 = T - eps``` - timestamp before transaction
     ```T1 = T + eps``` - timestamp after transaction
 
-    Pie consisted of ```N``` SHARES with share price ```P_0 = NAV_T0 / N```.
+    pif consisted of ```N``` SHARES with share price ```P_0 = NAV_T0 / N```.
 
     New shares amount will be ```M = N + X / P_0```
     Updated share price ```P_T1 = NAV_T1 / M```
@@ -82,35 +82,35 @@ Define transactions:
 transaction = Transaction(datetime(2020, 4, 1), funding=200)
 ```
 
-Create pie object:
+Create pif object:
 
 ```python
 investor = ExampleInvestor(investment_timestamp=datetime(2020, 1, 1),
                            deposit=100, transactions=[transaction])
 
-# create pie
-pie = ROICalculator(investor)
+# create pif
+pif = ROICalculator(investor)
 ```
 
 3. Calculate ROI per period ```(t_0, t_1)```, **```t_1 > t_0```**
 ```python
 # initial investment time
-t_0 = pie.investor.investment_timestamp
+t_0 = pif.investor.investment_timestamp
 
 #
 # before transaction
 #
 
 t_1 = datetime(2020, 3, 31)
-return_day_1 = pie.get_share_price_perfomance(t=t_1,
+return_day_1 = pif.get_share_price_perfomance(t=t_1,
                                               t0=t_1 - timedelta(days=1))
 print(f'1D return on {t_1.date()} = {return_day_1 * 100:.2f} %')
 
-return_mtd_1 = pie.get_share_price_perfomance(t=t_1,
+return_mtd_1 = pif.get_share_price_perfomance(t=t_1,
                                               t0=t_1.replace(day=1) - timedelta(hours=1))
 print(f'MTD return on {t_1.date()} = {return_mtd_1 * 100:.2f} %')
 
-return_ytd_1 = pie.get_share_price_perfomance(t=t_1, t0=t_0)
+return_ytd_1 = pif.get_share_price_perfomance(t=t_1, t0=t_0)
 print(f'YTD return on {t_1.date()} = {return_ytd_1 * 100:.2f} %\n')
 
 #
@@ -118,15 +118,15 @@ print(f'YTD return on {t_1.date()} = {return_ytd_1 * 100:.2f} %\n')
 #
 
 t_2 = datetime(2020, 4, 30)
-return_day_2 = pie.get_share_price_perfomance(t=t_2,
+return_day_2 = pif.get_share_price_perfomance(t=t_2,
                                               t0=t_2 - timedelta(days=1))
 print(f'1D return on {t_2.date()} = {return_day_2 * 100:.2f} %')
 
-return_mtd_2 = pie.get_share_price_perfomance(t=t_2,
+return_mtd_2 = pif.get_share_price_perfomance(t=t_2,
                                               t0=t_2.replace(day=1) - timedelta(hours=1))
 print(f'MTD return on {t_2.date()} = {return_mtd_2 * 100:.2f} %')
 
-return_ytd_2 = pie.get_share_price_perfomance(t=t_2, t0=t_0)
+return_ytd_2 = pif.get_share_price_perfomance(t=t_2, t0=t_0)
 print(f'YTD return on {t_2.date()} = {return_ytd_2 * 100:.2f} %\n')
 
 ```
