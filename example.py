@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
-from investor import Investor
-from transaction import Transaction
+from ROICalculator import Investor
+from ROICalculator import Transaction
 from ROICalculator import ROICalculator
 
 

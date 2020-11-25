@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 from typing import List
 
-from transaction import Transaction
+from .transaction import Transaction
 
 Transactions = List[Transaction]
 

@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from investor import Investor
+from .investor import Investor
 
 
 class ROICalculator:

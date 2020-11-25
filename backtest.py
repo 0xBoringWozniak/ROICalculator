@@ -2,9 +2,7 @@ from datetime import datetime, timedelta
 
 import numpy as np 
 
-from investor import Investor
-from transaction import Transaction
-from ROICalculator import ROICalculator
+from ROICalculator import *
 
 
 class ExampleInvestor(Investor):
