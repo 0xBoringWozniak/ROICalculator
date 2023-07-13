@@ -31,7 +31,7 @@ Moreover, we can calculate ROI at any period ```(t, t0)```, ```t > t0```.
 1. Create own class ```Investor``` implemented by Investor interface and redefine **```get_nav_by_timestamp```** - it can be ```pandas.Series``` with access to NAV by timestamp or manual input like in the example **(not recommended)**
 
 ```python
-lass ExampleInvestor(Investor):
+class ExampleInvestor(Investor):
     '''
 
     Simple lending (static) strategy with 0.05% profit daily
